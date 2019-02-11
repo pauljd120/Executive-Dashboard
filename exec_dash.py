@@ -3,15 +3,14 @@
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+import operator
 
-print("Input file name: ")
-
-input_file = input()
+input_file = input("Input file name: ")
 
 file_path = "/Users/pauldougherty/Desktop/python/p2/data/" + input_file
 
 if (os.path.isfile(file_path)):
-    #file_stats = pd.read_csv(file_path)
+    file_stats = pd.read_csv(file_path)
 
     month = int(input_file[5:6])
     year = input_file[:4]
@@ -31,31 +30,6 @@ if (os.path.isfile(file_path)):
         12:"December"
     }
 
-
-
-
-
-    ##TEMP##
-    my_list = [
-        ["2018-09-01", "Super Soft Hoodie",	75.00, 3, 225.00],
-        ["2018-09-01", "Vintage Logo Tee",	15.95, 5, 79.75],
-        ["2018-09-02", "Super Soft Sweater", 149.99, 2, 299.98]
-    ]
-    df = pd.DataFrame(my_list)
-    df.columns = ["date", "product", "unit price", "units sold", "sales price"]
-    print("------")
-    print(df.head(3))
-    print("------")
-
-    #BEST SELLING PRODUCTS
-    #for index, row in df.iterrows():
-    #    print(row["date"])
-
-
-
-
-
-    #ACTUAL CODE
     print("-----------------------")
     print("MONTH: " + months[month] + " " + year)
 
@@ -65,39 +39,49 @@ if (os.path.isfile(file_path)):
 
 
     print("-----------------------")
-    monthly_sales_string = str(df["sales price"].sum())
+
+    monthly_sales_string = str("${0:.2f}".format(file_stats["sales price"].sum()))
     print("TOTAL MONTHLY SALES: " + monthly_sales_string)
 
 
     print("-----------------------")
     print("TOP SELLING PRODUCTS:")
-    print("  1) Button-Down Shirt: $6,960.35")
-    print("  2) Super Soft Hoodie: $1,875.00")
-    print("  3) etc.")
-    ##figure out  a sorting method
-    top_sellers = pd.DataFrame(
-        {
-            "product" : [],
-            "sales volume" : []
-        }
 
-    )
+    products = list(file_stats["product"].unique())
 
+    product_and_sales = []
+
+    for a in products:
+        total_sales = file_stats[file_stats["product"] == a]["sales price"].sum()
+        product_and_sales.append({"product":a, "sales":total_sales})
+
+
+    product_and_sales = sorted(product_and_sales, key=operator.itemgetter("sales"), reverse=True)
+
+    x = 1
+
+    while x < 6:
+
+        number_to_print = "${0:.2f}".format(product_and_sales[x]["sales"])
+
+        print("    " + str(x) + ") " + product_and_sales[x]["product"] + ": " + number_to_print)
+        x = x + 1
 
     print("-----------------------")
     print("VISUALIZING THE DATA...")
-    ##use matplotlib
 
+    product_names = []
+    product_sales = []
 
+    for s in product_and_sales:
+      product_names.append(s["product"])
+      product_sales.append(s["sales"])
 
-
-
-
-
-
-
-
-
-
+    plt.bar(product_names, product_sales)
+    plt.ylabel("Sales (USD)")
+    plt.xlabel("Product")
+    plt.title("Top-Selling Products (" + months[month] + " " + year + ")")
+    plt.show()
+    
 else:
     print("Invalid filename. The program will exit now.")

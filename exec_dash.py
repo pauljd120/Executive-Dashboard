@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 import operator
+import matplotlib.ticker as ticker
 
 input_file = input("Input file name: ")
 
@@ -77,11 +78,20 @@ if (os.path.isfile(file_path)):
       product_names.append(s["product"])
       product_sales.append(s["sales"])
 
+
+    ## https://github.com/s2t2/exec-dash-starter-py/commit/01b261ca30ee4c64d93c2146a1659ae2c9d445a5
+    fig, ax = plt.subplots()
+    usd_formatter = ticker.FormatStrFormatter('$%1.2f')
+    ax.yaxis.set_major_formatter(usd_formatter)
+
     plt.bar(product_names, product_sales)
     plt.ylabel("Sales (USD)")
     plt.xlabel("Product")
     plt.title("Top-Selling Products (" + months[month] + " " + year + ")")
+
+
+
     plt.show()
-    
+
 else:
     print("Invalid filename. The program will exit now.")

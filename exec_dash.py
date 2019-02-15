@@ -6,12 +6,22 @@ import matplotlib.pyplot as plt
 import operator
 import matplotlib.ticker as ticker
 
+# utility function to convert float or integer to usd-formatted string (for printing), adapted from:
+#  + https://github.com/s2t2/shopping-cart-screencast/blob/30c2a2873a796b8766e9b9ae57a2764725ccc793/shopping_cart.py#L56-L59
+def to_usd(my_price):
+    return "${0:,.2f}".format(my_price) #> $12,000.71
+
 input_file = input("Input file name: ")
 
-file_path = "/Users/pauldougherty/Desktop/python/p2/data/" + input_file
+#https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
+file_path = os.path.join("data/", input_file)
 
+#https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
 if (os.path.isfile(file_path)):
+
+    #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/csv.md
     file_stats = pd.read_csv(file_path)
+
 
     month = int(input_file[5:6])
     year = input_file[:4]
@@ -56,7 +66,7 @@ if (os.path.isfile(file_path)):
         total_sales = file_stats[file_stats["product"] == a]["sales price"].sum()
         product_and_sales.append({"product":a, "sales":total_sales})
 
-
+    #went over this method in office hours with you
     product_and_sales = sorted(product_and_sales, key=operator.itemgetter("sales"), reverse=True)
 
     x = 1
@@ -84,13 +94,21 @@ if (os.path.isfile(file_path)):
     usd_formatter = ticker.FormatStrFormatter('$%1.2f')
     ax.yaxis.set_major_formatter(usd_formatter)
 
+    #learned this during the in class graph exercise
     plt.bar(product_names, product_sales)
     plt.ylabel("Sales (USD)")
     plt.xlabel("Product")
     plt.title("Top-Selling Products (" + months[month] + " " + year + ")")
 
+    #https://github.com/s2t2/exec-dash-starter-py/commit/a4478c28c6ce0fb393aca52b0cd0845cfe6c0f7c
+    for bar_index, bar_size in enumerate(product_sales):
+        h = bar_size# - 2 # to the right of the bar's right edge
+        w = bar_index# - .5 # below the bar's top edge
+        bar_label = to_usd(bar_size)
+        ax.text(w, h, bar_label, ha="center", va="bottom")
 
 
+    plt.tight_layout()
     plt.show()
 
 else:

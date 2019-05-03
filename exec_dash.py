@@ -33,7 +33,7 @@ def get_top_sellers(file_stats, product_and_sales):
     print(product_and_sales)
     return product_and_sales
 
-input_file = "201711.csv"
+input_file = input("Input File Name: ")
 
 #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
 file_path = os.path.join("data/", input_file)

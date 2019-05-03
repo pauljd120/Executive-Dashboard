@@ -11,5 +11,5 @@ This project requires Python 3.x.
 Run this script, then follow the on-screen instructions:
 
 ```shell
-python3 exec_dash.py
+python exec_dash.py
 ```

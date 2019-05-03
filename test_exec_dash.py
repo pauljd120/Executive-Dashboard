@@ -24,6 +24,7 @@ def test_get_top_sellers():
     
     result = get_top_sellers(file_stats, product_and_sales)
     
+    assert result == "[{'product': 'Button-Down Shirt', 'sales': 5399.15}, {'product': 'Super Soft Hoodie', 'sales': 1950.0}, {'product': 'Khaki Pants', 'sales': 1869.0}, {'product': 'Super Soft Sweater', 'sales': 1349.91}, {'product': 'Vintage Logo Tee', 'sales': 669.9}, {'product': 'Sticker Pack', 'sales': 265.5}, {'product': 'Brown Boots', 'sales': 250.0}, {'product': 'Winter Hat', 'sales': 207.19999999999996}]"
     
     
     

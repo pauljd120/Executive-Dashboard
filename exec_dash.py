@@ -80,7 +80,7 @@ if (os.path.isfile(file_path)):
 
     product_and_sales = []
 
-    get_top_sellers(file_stats, product_and_sales)
+    print(get_top_sellers(file_stats, product_and_sales))
 
     print("-----------------------")
     print("VISUALIZING THE DATA...")

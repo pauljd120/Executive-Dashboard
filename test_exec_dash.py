@@ -11,14 +11,14 @@ def test_to_usd():
     assert result == "$50.00"
 
 def test_get_top_sellers():
-    input_file = "201711.csv"
+    file_name = "201711.csv"
     
-    file_path = os.path.join("data/", input_file)
+    file_path = os.path.join("data/", file_name)
     
     file_stats = pd.read_csv(file_path)
     
-    month = int(input_file[5:6])
-    year = input_file[:4]
+    month = int(file_name[5:6])
+    year = file_name[:4]
     
     product_and_sales = []
     

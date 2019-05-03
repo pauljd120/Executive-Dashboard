@@ -11,6 +11,25 @@ import matplotlib.ticker as ticker
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price) #> $12,000.71
 
+def get_top_sellers(file_stats, product_and_sales):
+    products = list(file_stats["product"].unique())
+
+    for a in products:
+        total_sales = file_stats[file_stats["product"] == a]["sales price"].sum()
+        product_and_sales.append({"product":a, "sales":total_sales})
+
+    #went over this method in office hours with you
+    product_and_sales = sorted(product_and_sales, key=operator.itemgetter("sales"), reverse=True)
+
+    x = 1
+
+    while x < 6:
+
+        number_to_print = "${0:.2f}".format(product_and_sales[x]["sales"])
+
+        print("    " + str(x) + ") " + product_and_sales[x]["product"] + ": " + number_to_print)
+        x = x + 1
+
 input_file = input("Input file name: ")
 
 #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
@@ -21,7 +40,6 @@ if (os.path.isfile(file_path)):
 
     #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/csv.md
     file_stats = pd.read_csv(file_path)
-
 
     month = int(input_file[5:6])
     year = input_file[:4]
@@ -58,25 +76,9 @@ if (os.path.isfile(file_path)):
     print("-----------------------")
     print("TOP SELLING PRODUCTS:")
 
-    products = list(file_stats["product"].unique())
-
     product_and_sales = []
 
-    for a in products:
-        total_sales = file_stats[file_stats["product"] == a]["sales price"].sum()
-        product_and_sales.append({"product":a, "sales":total_sales})
-
-    #went over this method in office hours with you
-    product_and_sales = sorted(product_and_sales, key=operator.itemgetter("sales"), reverse=True)
-
-    x = 1
-
-    while x < 6:
-
-        number_to_print = "${0:.2f}".format(product_and_sales[x]["sales"])
-
-        print("    " + str(x) + ") " + product_and_sales[x]["product"] + ": " + number_to_print)
-        x = x + 1
+    get_top_sellers(file_stats, product_and_sales)
 
     print("-----------------------")
     print("VISUALIZING THE DATA...")

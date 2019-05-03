@@ -33,88 +33,91 @@ def get_top_sellers(file_stats, product_and_sales):
     print(product_and_sales)
     return product_and_sales
 
-input_file = input("Input File Name: ")
-
-#https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
-file_path = os.path.join("data/", input_file)
-
-#https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
-if (os.path.isfile(file_path)):
-
-    #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/csv.md
-    file_stats = pd.read_csv(file_path)
-
-    month = int(input_file[5:6])
-    year = input_file[:4]
-
-    months = {
-        1:"January",
-        2:"February",
-        3:"March",
-        4:"April",
-        5:"May",
-        6:"June",
-        7:"July",
-        8:"August",
-        9:"September",
-        10:"October",
-        11:"November",
-        12:"December"
-    }
-
-    print("-----------------------")
-    print("MONTH: " + months[month] + " " + year)
+if __name__ == "__main__":
 
 
-    print("-----------------------")
-    print("CRUNCHING THE DATA...")
+    input_file = input("Input File Name: ")
+
+    #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
+    file_path = os.path.join("data/", input_file)
+
+    #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/os.md#file-operations
+    if (os.path.isfile(file_path)):
+
+        #https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/csv.md
+        file_stats = pd.read_csv(file_path)
+
+        month = int(input_file[5:6])
+        year = input_file[:4]
+
+        months = {
+            1:"January",
+            2:"February",
+            3:"March",
+            4:"April",
+            5:"May",
+            6:"June",
+            7:"July",
+            8:"August",
+            9:"September",
+            10:"October",
+            11:"November",
+            12:"December"
+        }
+
+        print("-----------------------")
+        print("MONTH: " + months[month] + " " + year)
 
 
-    print("-----------------------")
-
-    monthly_sales_string = str("${0:.2f}".format(file_stats["sales price"].sum()))
-    print("TOTAL MONTHLY SALES: " + monthly_sales_string)
+        print("-----------------------")
+        print("CRUNCHING THE DATA...")
 
 
-    print("-----------------------")
-    print("TOP SELLING PRODUCTS:")
+        print("-----------------------")
 
-    product_and_sales = []
-
-    get_top_sellers(file_stats, product_and_sales)
-
-    print("-----------------------")
-    print("VISUALIZING THE DATA...")
-
-    product_names = []
-    product_sales = []
-
-    for s in product_and_sales:
-      product_names.append(s["product"])
-      product_sales.append(s["sales"])
+        monthly_sales_string = str("${0:.2f}".format(file_stats["sales price"].sum()))
+        print("TOTAL MONTHLY SALES: " + monthly_sales_string)
 
 
-    ## https://github.com/s2t2/exec-dash-starter-py/commit/01b261ca30ee4c64d93c2146a1659ae2c9d445a5
-    fig, ax = plt.subplots()
-    usd_formatter = ticker.FormatStrFormatter('$%1.2f')
-    ax.yaxis.set_major_formatter(usd_formatter)
+        print("-----------------------")
+        print("TOP SELLING PRODUCTS:")
 
-    #learned this during the in class graph exercise
-    plt.bar(product_names, product_sales)
-    plt.ylabel("Sales (USD)")
-    plt.xlabel("Product")
-    plt.title("Top-Selling Products (" + months[month] + " " + year + ")")
+        product_and_sales = []
 
-    #https://github.com/s2t2/exec-dash-starter-py/commit/a4478c28c6ce0fb393aca52b0cd0845cfe6c0f7c
-    for bar_index, bar_size in enumerate(product_sales):
-        h = bar_size# - 2 # to the right of the bar's right edge
-        w = bar_index# - .5 # below the bar's top edge
-        bar_label = to_usd(bar_size)
-        ax.text(w, h, bar_label, ha="center", va="bottom")
+        get_top_sellers(file_stats, product_and_sales)
+
+        print("-----------------------")
+        print("VISUALIZING THE DATA...")
+
+        product_names = []
+        product_sales = []
+
+        for s in product_and_sales:
+          product_names.append(s["product"])
+          product_sales.append(s["sales"])
 
 
-    plt.tight_layout()
-    plt.show()
+        ## https://github.com/s2t2/exec-dash-starter-py/commit/01b261ca30ee4c64d93c2146a1659ae2c9d445a5
+        fig, ax = plt.subplots()
+        usd_formatter = ticker.FormatStrFormatter('$%1.2f')
+        ax.yaxis.set_major_formatter(usd_formatter)
 
-else:
-    print("Invalid filename. The program will exit now.")
+        #learned this during the in class graph exercise
+        plt.bar(product_names, product_sales)
+        plt.ylabel("Sales (USD)")
+        plt.xlabel("Product")
+        plt.title("Top-Selling Products (" + months[month] + " " + year + ")")
+
+        #https://github.com/s2t2/exec-dash-starter-py/commit/a4478c28c6ce0fb393aca52b0cd0845cfe6c0f7c
+        for bar_index, bar_size in enumerate(product_sales):
+            h = bar_size# - 2 # to the right of the bar's right edge
+            w = bar_index# - .5 # below the bar's top edge
+            bar_label = to_usd(bar_size)
+            ax.text(w, h, bar_label, ha="center", va="bottom")
+
+
+        plt.tight_layout()
+        plt.show()
+
+    else:
+        print("Invalid filename. The program will exit now.")

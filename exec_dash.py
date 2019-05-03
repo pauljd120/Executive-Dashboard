@@ -30,6 +30,7 @@ def get_top_sellers(file_stats, product_and_sales):
         print("    " + str(x) + ") " + product_and_sales[x]["product"] + ": " + number_to_print)
         x = x + 1
     
+    print(product_and_sales)
     return product_and_sales
 
 input_file = input("Input file name: ")
@@ -80,7 +81,7 @@ if (os.path.isfile(file_path)):
 
     product_and_sales = []
 
-    print(get_top_sellers(file_stats, product_and_sales))
+    get_top_sellers(file_stats, product_and_sales)
 
     print("-----------------------")
     print("VISUALIZING THE DATA...")

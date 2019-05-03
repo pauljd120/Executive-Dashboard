@@ -6,6 +6,11 @@ My submission for the ["Executive Dashboard" project](https://github.com/prof-ro
 
 This project requires Python 3.x.
 
+```shell
+pip install pandas
+pip install matplotlib
+```
+
 ## Usage
 
 Run this script, then follow the on-screen instructions:
